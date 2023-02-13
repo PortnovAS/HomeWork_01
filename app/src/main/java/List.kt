@@ -2,22 +2,21 @@ package com.example.homework_01
 
 data class Person (val name: String, val surname: String, val age: Int)
 
-fun List<Person>.sortAge() = sortedBy{it.age}
+fun List<Person>.sortAge() = sortedWith(compareByDescending { it.age })
 
-fun List<Person>.sortName() = sortedBy{it.surname}.sortedBy{it.name}
+fun List<Person>.sortName() = sortedWith(compareBy({ it.name }, { it.surname }))
 
-fun <T> timeExecution(action: () -> T): Long {
+fun timeExecution(action: () -> Unit): Long {
     val start = System.currentTimeMillis()
     action()
     return System.currentTimeMillis() - start
 }
 
 fun main () {
-    var  numberList = List(100) { it }
+    val  numberList = List(100) { it }
         .filter { it % 2 == 0 } // 0, 2, 4, 6, 8, 10 ...
         .slice(10..20) // 20, 22 ... 38, 40
-        .map { it + 1 } // 21, 23 ... 39, 41
-        .fold (0) {accumulator, value -> accumulator + value} // 341
+        .sumOf { it + 1 }// 341
     println(numberList)
 
     val PersonList = listOf<Person>(
